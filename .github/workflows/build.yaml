@@ -28,11 +28,18 @@ jobs:
       - name: Build Chess.js Versions
         run: npm run build-all-versions
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: "./dist"
+
       - name: Archive Chess.js Versions
         uses: actions/upload-artifact@v2
         with:
           name: chess-versions
-          path: dist
+          path: ./dist
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
