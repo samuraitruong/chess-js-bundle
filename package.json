@@ -1,5 +1,5 @@
 {
-  "name": "ch",
+  "name": "chess.js-bundle",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,10 +10,10 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "axios": "^1.4.0",
-    "chess.js": "^1.0.0-beta.1",
+    "chess.js": "^1.0.0-beta.6",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4"
   }
