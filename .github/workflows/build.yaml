@@ -1,0 +1,45 @@
+name: Build and Deploy Chess.js Versions
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Chess.js Versions
+        run: npm run build-all-versions
+
+      - name: Archive Chess.js Versions
+        uses: actions/upload-artifact@v2
+        with:
+          name: chess-versions
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@releases/v4
+        with:
+          branch: gh-pages
+          folder: dist

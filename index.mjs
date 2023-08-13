@@ -21,10 +21,10 @@ function convertMovesToFriendlyNames(fen, moves) {
 
 const fenString = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
 
-const moves = "e4 e5 f1c4 f8c5 Nf3 Nf6 e1g1 o-o";
+const moves = "e4 e5 f1c4 f8c5 Nf3 Nf6 e1g1 e8g8";
 
 const friendlyNames = convertMovesToFriendlyNames(
-  "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w",
+  "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
   moves
 );
 console.log(friendlyNames);
