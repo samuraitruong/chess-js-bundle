@@ -2,7 +2,7 @@ import { execSync } from "child_process";
 import axios from "axios";
 import fs from "fs";
 import path from "path";
-import marked from "marked";
+import { marked } from "marked";
 
 async function fetchAllVersion() {
   const apiUrl = "https://api.github.com/repos/jhlywa/chess.js/tags";
