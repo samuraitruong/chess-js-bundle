@@ -1,5 +1,7 @@
 import { execSync } from "child_process";
 import axios from "axios";
+import fs from "fs/promises";
+import path from "path";
 
 async function fetchAllVersion() {
   const apiUrl = "https://api.github.com/repos/jhlywa/chess.js/tags";
@@ -7,8 +9,6 @@ async function fetchAllVersion() {
   try {
     const response = await axios.get(apiUrl);
     const data = response.data;
-    //const latestVersion = data[0].name; // Assuming the latest tag is the first in the array
-
     return data.map((x) => x.name);
   } catch (error) {
     console.error("Error fetching latest version:", error);
@@ -18,13 +18,37 @@ async function fetchAllVersion() {
 
 async function buildAll() {
   const versionsToBuild = await fetchAllVersion();
-  //["v1.0.0-beta.6", "v1.0.0-beta.5"]; // Add other versions as needed
+  const distFolderPath = "./dist";
+
+  // Create dist folder if it doesn't exist
+  await fs.mkdir(distFolderPath, { recursive: true });
+
+  const indexContent = [];
 
   for (const version of versionsToBuild) {
-    console.log(`Building chess.js version ${version}`);
-    execSync(`npm install chess.js@${version}`);
-    execSync(`CHESS_JS_VERSION=${version} npm run build`);
+    try {
+      console.log(`Building chess.js version ${version}`);
+      execSync(`npm install chess.js@${version}`);
+      execSync(`CHESS_JS_VERSION=${version} npm run build`);
+
+      // Assuming the bundle file is named chess.js
+      const bundleFileName = `chess.${version}.js`;
+      const bundleFilePath = `https://samuraitruong.github.io/chess-js-bundle/${bundleFileName}`;
+
+      indexContent.push(`- [${version}](${bundleFilePath})`);
+    } catch (err) {
+      console.error(err);
+    }
   }
+
+  // Generate index.md content
+  const indexMdContent = indexContent.join("\n");
+  const indexPath = path.join(distFolderPath, "index.md");
+
+  // Write the index.md file
+  await fs.writeFile(indexPath, indexMdContent);
+  execSync(`npm install chess.js`);
+  console.log("index.md generated successfully");
 }
 
 (async () => {
