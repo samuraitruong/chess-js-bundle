@@ -1,6 +1,6 @@
 import { execSync } from "child_process";
 import axios from "axios";
-import fs from "fs/promises";
+import fs from "fs";
 import path from "path";
 
 async function fetchAllVersion() {
@@ -19,9 +19,9 @@ async function fetchAllVersion() {
 async function buildAll() {
   const versionsToBuild = await fetchAllVersion();
   const distFolderPath = "./dist";
-
+  const content = fs.readFileSync("readme.md", "utf8");
   // Create dist folder if it doesn't exist
-  await fs.mkdir(distFolderPath, { recursive: true });
+  await fs.mkdirSync(distFolderPath, { recursive: true });
 
   const indexContent = [];
 
@@ -43,10 +43,13 @@ async function buildAll() {
 
   // Generate index.md content
   const indexMdContent = indexContent.join("\n");
-  const indexPath = path.join(distFolderPath, "index.md");
+  const indexPath = path.join(distFolderPath, "index.html");
 
   // Write the index.md file
-  await fs.writeFile(indexPath, indexMdContent);
+  await fs.writeFile(
+    indexPath,
+    content.replace("__PLACEHOLDER__", indexMdContent)
+  );
   execSync(`npm install chess.js`);
   console.log("index.md generated successfully");
 }
