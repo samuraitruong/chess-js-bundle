@@ -2,6 +2,7 @@ import { execSync } from "child_process";
 import axios from "axios";
 import fs from "fs";
 import path from "path";
+import marked from "marked";
 
 async function fetchAllVersion() {
   const apiUrl = "https://api.github.com/repos/jhlywa/chess.js/tags";
@@ -48,7 +49,7 @@ async function buildAll() {
   // Write the index.md file
   await fs.writeFile(
     indexPath,
-    content.replace("__PLACEHOLDER__", indexMdContent)
+    marked(content.replace("__PLACEHOLDER__", indexMdContent))
   );
   execSync(`npm install chess.js`);
   console.log("index.md generated successfully");
