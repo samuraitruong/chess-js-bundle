@@ -47,7 +47,7 @@ async function buildAll() {
   const indexPath = path.join(distFolderPath, "index.html");
 
   // Write the index.md file
-  await fs.writeFile(
+  await fs.writeFileSync(
     indexPath,
     marked(content.replace("__PLACEHOLDER__", indexMdContent))
   );
